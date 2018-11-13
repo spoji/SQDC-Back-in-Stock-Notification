@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "SQDC Out of Stock Notification",
   "description": "Provides the option to subscribe to stock notifications for SQDC products directly from the product page.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browser_specific_settings": {
     "gecko": {
 	  "id": "notifications@sqdc.ca",

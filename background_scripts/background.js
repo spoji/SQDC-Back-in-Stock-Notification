@@ -94,13 +94,13 @@ browser.browserAction.onClicked.addListener(() => {
     if (skusInStock.length === 0) {
         browser.tabs.create({ url: "https://www.sqdc.ca" });
     } else {
-        for (let x=0; x<skusInStock.length; x++) {
-            browser.tabs.create({ url: sqdcWatched.urls[sqdcWatched.skus.indexOf(skusInStock[x])] });
-        }
+        skusInStock.forEach(sku => {
+            browser.tabs.create({ url: sqdcWatched.urls[sqdcWatched.skus.indexOf(sku)] });
+        });
     }
 });
 
-browser.alarms.create("sqdc-checkup", { periodInMinutes: 60*24 });
+browser.alarms.create("sqdc-checkup", { periodInMinutes: 60 });
 browser.alarms.onAlarm.addListener((alarm) => {
     browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc));
 });
