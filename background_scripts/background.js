@@ -1,7 +1,7 @@
 var skusInStock = [];
 var sqdcWatched = [];
 
-const checkInventory = async (sqdc) => {
+const checkInventory = async (sqdc, isActivateNotification) => {
     if (!sqdc || sqdc === undefined) {
         return;
     }
@@ -78,6 +78,8 @@ function handleMessage(message, sender, response) {
                 if (index > -1) {
                     sqdc.skus.splice(index, 1);
                     sqdc.urls.splice(index, 1);
+
+                    checkInventory(sqdc, false);
                 }
             }
 
@@ -102,8 +104,8 @@ browser.browserAction.onClicked.addListener(() => {
 
 browser.alarms.create("sqdc-checkup", { periodInMinutes: 60 });
 browser.alarms.onAlarm.addListener((alarm) => {
-    browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc));
+    browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc, true));
 });
 
 browser.runtime.onMessage.addListener(handleMessage);
-browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc));
+browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc, true));

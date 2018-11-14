@@ -5,11 +5,15 @@
     const sku = uri.substr(uri.lastIndexOf("/") + 1);
     const isFrenchSite = uri.indexOf("fr-CA") > -1;
 
-    function addNotifyButton() {
+    function addNotifyButton(isInStock) {
         browser.runtime.sendMessage(
             { action: "getSkus" }
         ).then(skus => {
             const isSkuCurrentlyWatched = skus.data.indexOf(sku) > -1;
+            if (isInStock && !isSkuCurrentlyWatched) {
+                return;
+            }
+
             const notifyBtnHTML = document.createElement("button");
             notifyBtnHTML.className = "btn btn-block btn-primary btn-md text-uppercase";
             notifyBtnHTML.id = "sqdc-webext-notifier-btn";
@@ -38,9 +42,7 @@
             body: "{\"skus\":[\"" + sku + "\"]}"
         });
         const response = await request.text();
-        if (response === "[]") {
-            addNotifyButton();
-        }
+        addNotifyButton(response.trim() !== "[]");
     };
 
     checkInventory();
