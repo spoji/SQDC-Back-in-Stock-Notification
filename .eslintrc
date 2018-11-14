@@ -251,9 +251,6 @@
     // Disallow Iterator (using __iterator__)
     "no-iterator": 2,
 
-    // Enforce consistent linebreak style
-    "linebreak-style": [2, "unix"],
-
     // Enforces return statements in callbacks of array's methods
     "array-callback-return": 2,
 
