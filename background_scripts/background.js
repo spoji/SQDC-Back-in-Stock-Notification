@@ -9,7 +9,7 @@ const checkInventory = async (sqdc, showPopup) => {
         sqdc.urls = ["https://www.sqdc.ca/fr-CA/p-nebuleuse/697238111150-P/697238111150", "https://www.sqdc.ca/fr-CA/p-argyle/688083001055-P/688083001031", "https://www.sqdc.ca/fr-CA/p-bayou/697238111112-P/697238111112"];
         browser.storage.sync.set({ sqdc: sqdc });
     }
-	*/
+    */
 
     if (!sqdc || sqdc === undefined) {
         return;
