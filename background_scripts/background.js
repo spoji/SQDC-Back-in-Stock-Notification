@@ -1,19 +1,20 @@
 var skusInStock = [];
 var sqdcWatched = [];
 
-const checkInventory = async (sqdc, isActivateNotification) => {
+const checkInventory = async (sqdc, showPopup) => {
     /*
-    sqdc = {};
-    sqdc.skus = ["697238111150", "688083001031", "697238111112"];
-    sqdc.urls = ["https://www.sqdc.ca/fr-CA/p-nebuleuse/697238111150-P/697238111150", "https://www.sqdc.ca/fr-CA/p-argyle/688083001055-P/688083001031", "https://www.sqdc.ca/fr-CA/p-bayou/697238111112-P/697238111112"];
-    */
+    if (!sqdc) {
+        sqdc = {};
+        sqdc.skus = ["697238111150", "688083001031", "697238111112"];
+        sqdc.urls = ["https://www.sqdc.ca/fr-CA/p-nebuleuse/697238111150-P/697238111150", "https://www.sqdc.ca/fr-CA/p-argyle/688083001055-P/688083001031", "https://www.sqdc.ca/fr-CA/p-bayou/697238111112-P/697238111112"];
+        browser.storage.sync.set({ sqdc: sqdc });
+    }
+	*/
 
     if (!sqdc || sqdc === undefined) {
         return;
     }
 
-
-    let title, message;
     sqdcWatched = sqdc;
 
     const request = await fetch("https://www.sqdc.ca/api/inventory/findInventoryItems", {
@@ -30,14 +31,20 @@ const checkInventory = async (sqdc, isActivateNotification) => {
         skusInStock = JSON.parse(response);
     } catch (e) {
         browser.browserAction.setBadgeText({ text: "?" });
-        return;
     }
+};
 
+function updateNotification(showPopup) {
+    let title, message;
     const plurial = skusInStock.length > 1 ? "s" : "";
 
     if (skusInStock.length > 0) {
         browser.browserAction.setBadgeText({ text: skusInStock.length.toString() });
         browser.browserAction.setBadgeBackgroundColor({ color: "red" });
+
+        if (!showPopup) {
+            return;
+        }
 
         if (sqdcWatched.urls[0].indexOf("fr-CA") > -1) {
             title = skusInStock.length + " item" + plurial + " en stock!";
@@ -55,9 +62,10 @@ const checkInventory = async (sqdc, isActivateNotification) => {
             message: message
         });
     } else {
+        browser.notifications.clear("sqdc-notify");
         browser.browserAction.setBadgeText({ text: "" });
     }
-};
+}
 
 function handleMessage(message, sender, response) {
     return new Promise(resolve => {
@@ -84,7 +92,7 @@ function handleMessage(message, sender, response) {
                     sqdc.skus.splice(index, 1);
                     sqdc.urls.splice(index, 1);
 
-                    checkInventory(sqdc, false);
+                    checkInventory(sqdc).then(() => updateNotification(skusInStock, false));
                 }
             }
 
@@ -109,8 +117,8 @@ browser.browserAction.onClicked.addListener(() => {
 
 browser.alarms.create("sqdc-checkup", { periodInMinutes: 60 });
 browser.alarms.onAlarm.addListener((alarm) => {
-    browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc, true));
+    browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc).then(() => updateNotification(true)));
 });
 
 browser.runtime.onMessage.addListener(handleMessage);
-browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc, true));
+browser.storage.sync.get("sqdc").then(({ sqdc }) => checkInventory(sqdc).then(() => updateNotification(true)));
