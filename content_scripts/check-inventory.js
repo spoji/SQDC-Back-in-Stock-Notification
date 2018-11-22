@@ -43,6 +43,7 @@
         const request = await fetch("https://www.sqdc.ca/api/inventory/findInventoryItems", {
             method: "POST",
             headers: {
+                "user-agent":       "SQDC-Out-of-Stock-Notification",
                 "content-type":     "application/json",
                 "x-requested-with": "XMLHttpRequest"
             },
