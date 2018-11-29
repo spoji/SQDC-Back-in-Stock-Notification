@@ -24,8 +24,8 @@ window.addEventListener("load", (event) => {
         if (urls[0] && urls[0].indexOf("fr-CA") > -1) {
             document.body.querySelector(".openSQDC").textContent = "Ouvrir le site web sqdc.ca";
             document.body.querySelector(".openInStock").textContent = "Ouvrir vos produits en stock";
-            document.body.querySelector(".openAll").textContent = "Ouvrir ves produits en alertes";
-            document.body.querySelector(".clearAll").textContent = "Effacer vos liste de produits en alertes";
+            document.body.querySelector(".openAll").textContent = "Ouvrir vos produits en alertes";
+            document.body.querySelector(".clearAll").textContent = "Effacer votre liste de produits en alertes";
         } else {
             document.body.querySelector(".openSQDC").textContent = "Open sqdc.ca website";
             document.body.querySelector(".openInStock").textContent = "Open your watched products in stock";
