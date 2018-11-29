@@ -81,7 +81,42 @@ function handleMessage(message, sender, response) {
                 return true;
             }
 
-            if (message.action === "watch") {
+            if (message.action === "openAll") {
+                sqdc.urls.forEach(url => {
+                    browser.tabs.create({ url: url });
+                });
+                return true;
+            }
+
+            if (message.action === "openInStock") {
+                checkInventory(sqdc).then(() => {
+                    skusInStock.forEach(sku => {
+                        browser.tabs.create({ url: sqdcWatched.urls[sqdcWatched.skus.indexOf(sku)] });
+                    });
+                });
+                return true;
+            }
+
+            if (message.action === "clearAll") {
+                if (sqdc.urls[0] && sqdc.urls[0].indexOf("fr-CA") > -1) {
+                    title = "Succès!";
+                    msg = "Tous vos produits ont été enlevés de la liste d'alerte.";
+                } else {
+                    title = "Success!";
+                    msg = "Your watchlist has been cleared of all products.";
+                }
+
+                sqdc.skus = [];
+                sqdc.urls = [];
+                browser.notifications.clear("sqdc-notify");
+                browser.browserAction.setBadgeText({ text: "" });
+                browser.notifications.create("sqdc-notify", {
+                    type: "basic",
+                    iconUrl: browser.extension.getURL("icons/icon128.png"),
+                    title: title,
+                    message: msg
+                });
+            } else if (message.action === "watch") {
                 if (sqdc.skus.indexOf(message.sku) === -1) {
                     sqdc.skus.push(message.sku);
                     sqdc.urls.push(message.url);
@@ -104,16 +139,6 @@ function handleMessage(message, sender, response) {
         });
     });
 }
-
-browser.browserAction.onClicked.addListener(() => {
-    if (skusInStock.length === 0) {
-        browser.tabs.create({ url: "https://www.sqdc.ca" });
-    } else {
-        skusInStock.forEach(sku => {
-            browser.tabs.create({ url: sqdcWatched.urls[sqdcWatched.skus.indexOf(sku)] });
-        });
-    }
-});
 
 browser.alarms.create("sqdc-checkup", { periodInMinutes: 60 });
 browser.alarms.onAlarm.addListener((alarm) => {

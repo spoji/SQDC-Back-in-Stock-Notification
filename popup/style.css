@@ -1,0 +1,18 @@
+html, body {
+    width: 340px;
+    margin: 0;
+}
+
+.button {
+    margin: 0.4em auto;
+    width: 320px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color:#000;
+    background-color: #C1F2FF;
+}
+
+.button:hover {
+    background-color: #AFF2F2;
+}

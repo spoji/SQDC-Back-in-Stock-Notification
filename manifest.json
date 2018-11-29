@@ -1,46 +1,45 @@
 {
-  "manifest_version": 2,
-  "name": "SQDC Out of Stock Notification",
-  "description": "Provides the option to subscribe to stock notifications for SQDC products directly from the product page.",
-  "version": "1.0.6",
-  "applications": {
-    "gecko": {
-	  "id": "{040d527b-ff06-464f-86a9-2994349e80d9}",
-	  "strict_min_version": "53.0"
-    }
-  },
-  "icons": {
-    "64": "icons/icon64.png",
-    "128": "icons/icon128.png"
-  },
-  "background": {
-      "scripts": [
-          "lib/browser-polyfill.js",
-          "background_scripts/background.js"
-      ]
-  },
-  "content_scripts": [
-      {
-          "matches": [
-              "*://*.sqdc.ca/*/p-*"
-          ],
-          "js": [
-              "lib/browser-polyfill.js",
-              "content_scripts/check-inventory.js"
-          ]
-      }
-  ],
-  "browser_action": {
-      "default_icon": {
-          "64": "icons/icon64.png",
-          "128": "icons/icon128.png"
-      },
-      "default_title": "SQDC Out of Stock Notification"
-  },
-  "permissions": [
-    "*://*.sqdc.ca/*",
-    "alarms",
-    "notifications",
-    "storage"
-  ]
+	"manifest_version": 2,
+	"name": "SQDC Out of Stock Notification",
+	"description": "Provides the option to subscribe to stock notifications for SQDC products directly from the product page.",
+	"version": "1.0.6",
+	"applications": {
+		"gecko": {
+			"id": "{040d527b-ff06-464f-86a9-2994349e80d9}",
+			"strict_min_version": "53.0"
+		}
+	},
+	"icons": {
+		"64": "icons/icon64.png",
+		"128": "icons/icon128.png"
+	},
+	"background": {
+		"scripts": [
+			"lib/browser-polyfill.js",
+			"background_scripts/background.js"
+		]
+	},
+	"content_scripts": [{
+		"matches": [
+			"*://*.sqdc.ca/*/p-*"
+		],
+		"js": [
+			"lib/browser-polyfill.js",
+			"content_scripts/check-inventory.js"
+		]
+	}],
+	"browser_action": {
+		"default_icon": {
+			"64": "icons/icon64.png",
+			"128": "icons/icon128.png"
+		},
+		"default_title": "SQDC Out of Stock Notification",
+		"default_popup": "popup/index.html"
+	},
+	"permissions": [
+		"*://*.sqdc.ca/*",
+		"alarms",
+		"notifications",
+		"storage"
+	]
 }
