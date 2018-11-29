@@ -81,6 +81,11 @@ function handleMessage(message, sender, response) {
                 return true;
             }
 
+            if (message.action === "getUrls") {
+                resolve({ data: sqdc.urls });
+                return true;
+            }
+
             if (message.action === "openAll") {
                 sqdc.urls.forEach(url => {
                     browser.tabs.create({ url: url });

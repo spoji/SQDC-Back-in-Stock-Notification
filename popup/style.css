@@ -1,18 +1,31 @@
 html, body {
-    width: 340px;
+    width: 400px;
     margin: 0;
 }
 
-.button {
-    margin: 0.4em auto;
+.button { 
+    display: block;
+    margin-bottom: 20px;
     width: 320px;
-    text-align: center;
-    font-size: 18px;
-    cursor: pointer;
-    color:#000;
-    background-color: #C1F2FF;
+    margin: 0.4em auto;
+    text-decoration: none;
+    border:1px solid #25729a; 
+    border-radius: 5px;
+    font-family: Arial, helvetica, sans-serif; 
+    font-size: 14px;
+    padding: 10px;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+    text-align: center; 
+    color: #FFFFFF; 
+    background-color: #3093c7;
+    background-image: linear-gradient(top, #3093c7, #1c5a85);
+    background-image: -moz-linear-gradient(top, #3093c7, #1c5a85);
 }
 
-.button:hover {
-    background-color: #AFF2F2;
+.button:hover{
+    border:1px solid #1c5675;
+    background-color: #26759e;
+    background-image: linear-gradient(top, #26759e, #133d5b);
+    background-image: -moz-linear-gradient(top, #26759e, #133d5b);
+    cursor: pointer;
 }
