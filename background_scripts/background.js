@@ -48,10 +48,10 @@ function updateNotification(showPopup) {
 
         if (sqdcWatched.urls[0].indexOf("fr-CA") > -1) {
             title = skusInStock.length + " item" + plurial + " en stock!";
-            message = "Cliquer le button de l'extension pour ouvrir le" + plurial + " page" + plurial + " correspondante" + plurial + ".";
+            message = "Cliquer le button de l'extension et selectionner 'Voir tous vos produits disponible'.";
         } else {
             title = skusInStock.length + " item" + plurial + " in stock!";
-            message = "Click the extension's button to open the product" + plurial + " page" + plurial + ".";
+            message = "Click the extension's button and select 'Open your watched products currently in stock'.";
         }
 
         browser.notifications.clear("sqdc-notify");
@@ -87,17 +87,46 @@ function handleMessage(message, sender, response) {
             }
 
             if (message.action === "openAll") {
-                sqdc.urls.forEach(url => {
-                    browser.tabs.create({ url: url });
-                });
+                if (sqdc.urls.length > 0) {
+                    sqdc.urls.forEach(url => {
+                        browser.tabs.create({ url: url });
+                    });
+                } else {
+                    browser.notifications.clear("sqdc-notify");
+                    browser.notifications.create("sqdc-notify", {
+                        type: "basic",
+                        iconUrl: browser.extension.getURL("icons/icon128.png"),
+                        title: "Notice",
+                        message: "You don't have any product in your watchlist."
+                    });
+                }
+
                 return true;
             }
 
             if (message.action === "openInStock") {
                 checkInventory(sqdc).then(() => {
-                    skusInStock.forEach(sku => {
-                        browser.tabs.create({ url: sqdcWatched.urls[sqdcWatched.skus.indexOf(sku)] });
-                    });
+                    if (skusInStock.length > 0) {
+                        skusInStock.forEach(sku => {
+                            browser.tabs.create({ url: sqdcWatched.urls[sqdcWatched.skus.indexOf(sku)] });
+                        });
+                    } else {
+                        if (sqdc.urls[0] && sqdc.urls[0].indexOf("fr-CA") > -1) {
+                            title = "Remarque";
+                            msg = "Aucun de vos produits sont présentement disponible.";
+                        } else {
+                            title = "Notice";
+                            msg = "None of your products are currently in stock.";
+                        }
+
+                        browser.notifications.clear("sqdc-notify");
+                        browser.notifications.create("sqdc-notify", {
+                            type: "basic",
+                            iconUrl: browser.extension.getURL("icons/icon128.png"),
+                            title: title,
+                            message: msg
+                        });
+                    }
                 });
                 return true;
             }
@@ -105,7 +134,7 @@ function handleMessage(message, sender, response) {
             if (message.action === "clearAll") {
                 if (sqdc.urls[0] && sqdc.urls[0].indexOf("fr-CA") > -1) {
                     title = "Succès!";
-                    msg = "Tous vos produits ont été enlevés de la liste d'alerte.";
+                    msg = "Tous vos produits ont été enlevés de la liste d'attente.";
                 } else {
                     title = "Success!";
                     msg = "Your watchlist has been cleared of all products.";
