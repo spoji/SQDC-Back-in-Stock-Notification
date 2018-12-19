@@ -1,4 +1,4 @@
-# SQDC-Out-of-Stock-Notification
+# SQDC-Back-In-Stock-Notification
 Provides the option to subscribe to stock notifications for SQDC products directly from the product page.
 
 To add a product on your watch-list, visit the product page of your choice on sqdc.ca, select your quantity and click the "Notify me when back in stock" button. Do this step for all the products you want to get notified. 
