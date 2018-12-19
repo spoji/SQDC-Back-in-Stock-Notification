@@ -8,4 +8,4 @@ The extension will take care of checking the inventory of your products every da
 
 Mozilla Firefox AMO url : https://addons.mozilla.org/en-US/firefox/addon/sqdc-out-of-stock-notification/
 
-Google Chrome store url : https://chrome.google.com/webstore/detail/sqdc-out-of-stock-notific/llgnjenjokhagmagnoaikpnndbfjhlpj
+Google Chrome store url : https://chrome.google.com/webstore/detail/sqdc-back-in-stock-notifi/llgnjenjokhagmagnoaikpnndbfjhlpj
