@@ -54,16 +54,18 @@ function updateNotification(showPopup) {
             message = "Click the extension's button and select 'Open your watched products currently in stock'.";
         }
 
-        browser.notifications.clear("sqdc-notify");
-        browser.notifications.create("sqdc-notify", {
-            type: "basic",
-            iconUrl: browser.extension.getURL("icons/icon128.png"),
-            title: title,
-            message: message
+        browser.notifications.clear("sqdc-notify").then(() => {
+            browser.notifications.create("sqdc-notify", {
+                type: "basic",
+                iconUrl: browser.extension.getURL("icons/icon128.png"),
+                title: title,
+                message: message
+            });
         });
     } else {
-        browser.notifications.clear("sqdc-notify");
-        browser.browserAction.setBadgeText({ text: "" });
+        browser.notifications.clear("sqdc-notify").then(() => {
+            browser.browserAction.setBadgeText({ text: "" });
+        });
     }
 }
 
@@ -92,12 +94,13 @@ function handleMessage(message, sender, response) {
                         browser.tabs.create({ url: url });
                     });
                 } else {
-                    browser.notifications.clear("sqdc-notify");
-                    browser.notifications.create("sqdc-notify", {
-                        type: "basic",
-                        iconUrl: browser.extension.getURL("icons/icon128.png"),
-                        title: "Notice",
-                        message: "You don't have any product in your watchlist."
+                    browser.notifications.clear("sqdc-notify").then(() => {
+                        browser.notifications.create("sqdc-notify", {
+                            type: "basic",
+                            iconUrl: browser.extension.getURL("icons/icon128.png"),
+                            title: "Notice",
+                            message: "You don't have any product in your watchlist."
+                        });
                     });
                 }
 
@@ -119,12 +122,13 @@ function handleMessage(message, sender, response) {
                             msg = "None of your products are currently in stock.";
                         }
 
-                        browser.notifications.clear("sqdc-notify");
-                        browser.notifications.create("sqdc-notify", {
-                            type: "basic",
-                            iconUrl: browser.extension.getURL("icons/icon128.png"),
-                            title: title,
-                            message: msg
+                        browser.notifications.clear("sqdc-notify").then(() => {
+                            browser.notifications.create("sqdc-notify", {
+                                type: "basic",
+                                iconUrl: browser.extension.getURL("icons/icon128.png"),
+                                title: title,
+                                message: msg
+                            });
                         });
                     }
                 });
@@ -142,13 +146,14 @@ function handleMessage(message, sender, response) {
 
                 sqdc.skus = [];
                 sqdc.urls = [];
-                browser.notifications.clear("sqdc-notify");
-                browser.browserAction.setBadgeText({ text: "" });
-                browser.notifications.create("sqdc-notify", {
-                    type: "basic",
-                    iconUrl: browser.extension.getURL("icons/icon128.png"),
-                    title: title,
-                    message: msg
+                browser.notifications.clear("sqdc-notify").then(() => {
+                    browser.browserAction.setBadgeText({ text: "" });
+                    browser.notifications.create("sqdc-notify", {
+                        type: "basic",
+                        iconUrl: browser.extension.getURL("icons/icon128.png"),
+                        title: title,
+                        message: msg
+                    });
                 });
             } else if (message.action === "watch") {
                 if (sqdc.skus.indexOf(message.sku) === -1) {
