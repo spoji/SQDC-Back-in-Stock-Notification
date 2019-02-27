@@ -20,6 +20,7 @@ const checkInventory = async (sqdc, showPopup) => {
     const request = await fetch("https://www.sqdc.ca/api/inventory/findInventoryItems", {
         method: "POST",
         headers: {
+            "user-agent": "SQDC-Back-in-Stock-Notification",
             "content-type": "application/json",
             "x-requested-with": "XMLHttpRequest"
         },
